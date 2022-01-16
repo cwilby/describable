@@ -1,0 +1,61 @@
+{
+    "name": "cwilby/describable",
+    "description": "A trait that gives Laravel models the ability to describe their columns and relationships.",
+    "keywords": [
+        "cwilby",
+        "laravel",
+        "describable"
+    ],
+    "homepage": "https://github.com/cwilby/describable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": ":author_name",
+            "email": "author@domain.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "spatie/laravel-package-tools": "^1.4.3",
+        "illuminate/contracts": "^8.37"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.3",
+        "orchestra/testbench": "^6.15",
+        "pestphp/pest": "^1.18",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "spatie/laravel-ray": "^1.23",
+        "vimeo/psalm": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wilby\\Describable\\": "src",
+            "Wilby\\Describable\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wilby\\Describable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest --no-coverage",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wilby\\Describable\\DescribableServiceProvider"
+            ],
+            "aliases": {
+                "Describable": "Wilby\\Describable\\DescribableFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
