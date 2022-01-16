@@ -2,29 +2,27 @@
 
 namespace Wilby\Describable;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 trait Describe
 {
     public static function describe()
     {
-        $table = (new static)->getTable();
+        $table = (new static())->getTable();
 
         return [
             'name' => static::class,
             'table' => $table,
             'columns' => static::describeColumns($table),
-            'relationships' => static::describeRelationships($table)
+            'relationships' => static::describeRelationships($table),
         ];
     }
 
     public static function describeColumns($table)
     {
-        $table = $table ?: (new static)->getTable();
+        $table = $table ?: (new static())->getTable();
 
         $guarded = config('describable.guarded', []);
 
@@ -33,12 +31,12 @@ trait Describe
 
         return collect(Schema::getColumnListing($table))
             ->filter(function ($name) use ($guarded) {
-                return !Str::contains($name, $guarded);
+                return ! Str::contains($name, $guarded);
             })
             ->map(function ($name) use ($connection, $table) {
                 return array_merge(
                     [
-                        'label' => Str::of($name)->replace('_', ' ')->ucwords()
+                        'label' => Str::of($name)->replace('_', ' ')->ucwords(),
                     ],
                     $connection->getDoctrineColumn($table, $name)->toArray()
                 );
@@ -49,7 +47,7 @@ trait Describe
 
     public static function describeRelationships($columns)
     {
-        $instance = new static;
+        $instance = new static();
 
         // Get public methods declared without parameters and non inherited
         $class = get_class($instance);
@@ -58,7 +56,7 @@ trait Describe
             $allMethods,
             function ($method) use ($class) {
                 return $method->class === $class
-                    && !$method->getParameters()                  // relationships have no parameters
+                    && ! $method->getParameters()                  // relationships have no parameters
                     && $method->getName() !== 'getRelationships'; // prevent infinite recursion
             }
         );
